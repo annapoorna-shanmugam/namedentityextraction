@@ -127,6 +127,38 @@
       "context_words": ["in the", "of the", "located in"]
     }
   },
+  "finance_entities": {
+    "COMPANY": {
+      "patterns": ["company", "corporation", "inc", "ltd", "llc", "enterprise", "firm", "organization"],
+      "context_words": ["acquired", "merged", "partnered", "invested"]
+    },
+    "CURRENCY": {
+      "patterns": ["usd", "eur", "gbp", "inr", "yen", "dollar", "euro", "rupee", "pound", "currency"],
+      "context_words": ["converted", "exchanged", "valued at"]
+    },
+    "TRANSACTION": {
+      "patterns": ["transaction", "payment", "transfer", "deposit", "withdrawal", "purchase", "sale", "deal"],
+      "context_words": ["completed", "initiated", "pending", "failed"]
+    },
+    "ACCOUNT": {
+      "patterns": ["account", "bank account", "savings", "checking", "current account", "number"],
+      "context_words": ["opened", "closed", "credited", "debited"]
+    }
+  },
+  "finance_events": {
+    "MERGER": {
+      "triggers": ["merged", "acquired", "consolidated"],
+      "attributes": ["company1", "company2", "date", "value"]
+    },
+    "TRANSACTION": {
+      "triggers": ["transaction", "payment", "transfer"],
+      "attributes": ["amount", "currency", "date", "account"]
+    },
+    "IPO": {
+      "triggers": ["ipo", "public offering", "listed"],
+      "attributes": ["company", "date", "value"]
+    }
+  },
   "healthcare_events": {
     "ADMISSION": {
       "triggers": ["admitted", "hospitalized", "checked in"],

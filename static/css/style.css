@@ -141,6 +141,37 @@ header p {
     color: #6c757d;
 }
 
+.larger-label {
+    font-size: 18px; /* Or any size you prefer */
+}
+
+.control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+ 
+.control-group label {
+    font-weight: 600;
+    color: #495057;
+    font-size: 0.9em;
+}
+ 
+.control-group select,
+.control-group input[type="file"] {
+    padding: 8px 12px;
+    border: 2px solid #dee2e6;
+    border-radius: 5px;
+    font-size: 0.9em;
+    transition: border-color 0.3s;
+}
+ 
+.control-group select:focus,
+.control-group input[type="file"]:focus {
+    outline: none;
+    border-color: #4facfe;
+}
+
 .entity-selection {
     margin-bottom: 20px;
 }

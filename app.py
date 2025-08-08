@@ -27,18 +27,17 @@ def extract_entities_and_events():
         text = data.get('text', '')
         selected_entities = data.get('entity_types', [])
         min_confidence = data.get('min_confidence', 0.5)
-        
+        domain = data.get('domain', 'healthcare')
+
         if not text.strip():
             return jsonify({'error': 'No text provided'}), 400
-        
-        entities = entity_extractor.extract_entities(text, selected_entities)
+
+        # Pass domain to entity extractor if supported, else use logic to select config
+        entities = entity_extractor.extract_entities(text, selected_entities, domain=domain) if 'domain' in entity_extractor.extract_entities.__code__.co_varnames else entity_extractor.extract_entities(text, selected_entities)
         entities = entity_extractor.filter_entities_by_confidence(entities, min_confidence)
-        
         events = event_extractor.extract_events(text, entities)
-        
         entity_stats = entity_extractor.get_entity_statistics(entities)
         event_stats = event_extractor.get_event_statistics(events)
-        
         response = {
             'entities': entities,
             'events': events,
@@ -50,9 +49,7 @@ def extract_entities_and_events():
             },
             'processed_text': text
         }
-        
         return jsonify(response)
-    
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
@@ -61,27 +58,20 @@ def upload_file():
     try:
         if 'file' not in request.files:
             return jsonify({'error': 'No file provided'}), 400
-        
         file = request.files['file']
         if file.filename == '':
             return jsonify({'error': 'No file selected'}), 400
-        
         if not file.filename.endswith(('.txt', '.csv')):
             return jsonify({'error': 'Only .txt and .csv files are supported'}), 400
-        
         content = file.read().decode('utf-8')
-        
         selected_entities = request.form.getlist('entity_types')
         min_confidence = float(request.form.get('min_confidence', 0.5))
-        
-        entities = entity_extractor.extract_entities(content, selected_entities)
+        domain = request.form.get('domain', 'healthcare')
+        entities = entity_extractor.extract_entities(content, selected_entities, domain=domain) if 'domain' in entity_extractor.extract_entities.__code__.co_varnames else entity_extractor.extract_entities(content, selected_entities)
         entities = entity_extractor.filter_entities_by_confidence(entities, min_confidence)
-        
         events = event_extractor.extract_events(content, entities)
-        
         entity_stats = entity_extractor.get_entity_statistics(entities)
         event_stats = event_extractor.get_event_statistics(events)
-        
         response = {
             'entities': entities,
             'events': events,
@@ -94,9 +84,7 @@ def upload_file():
             'processed_text': content,
             'filename': file.filename
         }
-        
         return jsonify(response)
-    
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
@@ -168,12 +156,26 @@ def export_results(format_type):
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-@app.route('/api/entity-types')
-def get_entity_types():
+
+# New endpoint to get available domains
+@app.route('/api/domains')
+def get_domains():
     with open('config/extraction_rules.json', 'r') as f:
         config = json.load(f)
-    
-    entity_types = list(config['healthcare_entities'].keys())
+    domains = []
+    for key in config.keys():
+        if key.endswith('_entities'):
+            domains.append(key.replace('_entities', ''))
+    return jsonify({'domains': domains})
+
+# Updated endpoint to get entity types for a domain
+@app.route('/api/entity-types')
+def get_entity_types():
+    domain = request.args.get('domain', 'healthcare')
+    with open('config/extraction_rules.json', 'r') as f:
+        config = json.load(f)
+    key = f"{domain}_entities"
+    entity_types = list(config.get(key, {}).keys())
     return jsonify({'entity_types': entity_types})
 
 @app.route('/api/sample-data')

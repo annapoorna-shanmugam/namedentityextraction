@@ -4,8 +4,9 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeApp();
 });
 
-function initializeApp() {
-    loadEntityTypes();
+async function initializeApp() {
+    await loadDomains();
+    await loadEntityTypes();
     loadSampleTexts();
     setupEventListeners();
     updateConfidenceDisplay();
@@ -17,11 +18,13 @@ function setupEventListeners() {
     document.getElementById('export-csv').addEventListener('click', () => exportResults('csv'));
     document.getElementById('file-input').addEventListener('change', handleFileUpload);
     document.getElementById('confidence-range').addEventListener('input', updateConfidenceDisplay);
-    
     document.getElementById('entity-filter').addEventListener('input', filterEntities);
     document.getElementById('entity-type-filter').addEventListener('change', filterEntities);
     document.getElementById('event-filter').addEventListener('input', filterEvents);
     document.getElementById('event-type-filter').addEventListener('change', filterEvents);
+    document.getElementById('domain-select').addEventListener('change', async function() {
+        await loadEntityTypes();
+    });
 }
 
 function switchTab(tabName) {
@@ -46,14 +49,30 @@ function updateConfidenceDisplay() {
     display.textContent = slider.value;
 }
 
+async function loadDomains() {
+    try {
+        const response = await fetch('/api/domains');
+        const data = await response.json();
+        const domainSelect = document.getElementById('domain-select');
+        domainSelect.innerHTML = '';
+        data.domains.forEach(domain => {
+            const option = document.createElement('option');
+            option.value = domain;
+            option.textContent = domain.charAt(0).toUpperCase() + domain.slice(1);
+            domainSelect.appendChild(option);
+        });
+    } catch (error) {
+        console.error('Error loading domains:', error);
+    }
+}
+
 async function loadEntityTypes() {
     try {
-        const response = await fetch('/api/entity-types');
+        const domain = document.getElementById('domain-select').value || 'healthcare';
+        const response = await fetch(`/api/entity-types?domain=${domain}`);
         const data = await response.json();
-        
         const container = document.getElementById('entity-checkboxes');
         container.innerHTML = '';
-        
         data.entity_types.forEach(type => {
             const div = document.createElement('div');
             div.className = 'checkbox-item';
@@ -63,7 +82,6 @@ async function loadEntityTypes() {
             `;
             container.appendChild(div);
         });
-        
         populateEntityTypeFilters(data.entity_types);
     } catch (error) {
         console.error('Error loading entity types:', error);
@@ -127,16 +145,13 @@ function handleFileUpload(event) {
 
 async function extractEntitiesAndEvents() {
     const activeTab = document.querySelector('.tab-button.active').textContent.includes('Text') ? 'text' : 'file';
-    
     let text = '';
     let selectedEntityTypes = [];
     let minConfidence = parseFloat(document.getElementById('confidence-range').value);
-    
+    const domain = document.getElementById('domain-select').value || 'healthcare';
     const checkboxes = document.querySelectorAll('#entity-checkboxes input[type="checkbox"]:checked');
     checkboxes.forEach(cb => selectedEntityTypes.push(cb.value));
-    
     showLoading();
-    
     try {
         if (activeTab === 'text') {
             text = document.getElementById('input-text').value.trim();
@@ -145,7 +160,6 @@ async function extractEntitiesAndEvents() {
                 hideLoading();
                 return;
             }
-            
             const response = await fetch('/api/extract', {
                 method: 'POST',
                 headers: {
@@ -154,13 +168,12 @@ async function extractEntitiesAndEvents() {
                 body: JSON.stringify({
                     text: text,
                     entity_types: selectedEntityTypes,
-                    min_confidence: minConfidence
+                    min_confidence: minConfidence,
+                    domain: domain
                 })
             });
-            
             const data = await response.json();
             displayResults(data);
-            
         } else {
             const fileInput = document.getElementById('file-input');
             if (!fileInput.files[0]) {
@@ -168,17 +181,15 @@ async function extractEntitiesAndEvents() {
                 hideLoading();
                 return;
             }
-            
             const formData = new FormData();
             formData.append('file', fileInput.files[0]);
             selectedEntityTypes.forEach(type => formData.append('entity_types', type));
             formData.append('min_confidence', minConfidence);
-            
+            formData.append('domain', domain);
             const response = await fetch('/api/upload', {
                 method: 'POST',
                 body: formData
             });
-            
             const data = await response.json();
             displayResults(data);
         }
