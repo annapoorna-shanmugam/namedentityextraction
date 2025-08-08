@@ -16,17 +16,19 @@ class FinanceTokenizer:
             'acct': 'account',
         }
         self.finance_compounds = [
-            'bank account', 'current account', 'savings account', 'stock market',
+            'bank account', 'current account', 'savings account', 'stock market', 'stock price',
             'public offering', 'initial public offering', 'exchange rate', 'interest rate',
             'credit card', 'debit card', 'financial year', 'balance sheet', 'income statement',
-            'cash flow', 'shareholder value', 'market cap', 'merger deal', 'acquisition deal'
+            'cash flow', 'shareholder value', 'market cap', 'merger deal', 'acquisition deal',
+            'digital payment', 'digital payment service', 'digital payment services'
         ]
 
     def custom_tokenize(self, text: str) -> List[str]:
         text = text.lower()
         for abbr, full in self.finance_abbreviations.items():
             text = re.sub(r'\b' + abbr + r'\b', full, text)
-        tokens = re.findall(r'\b\w+\b|[^\w\s]', text)
+        # Improved regex: keeps words, numbers, contractions, and separates punctuation
+        tokens = re.findall(r"[A-Za-z0-9_]+(?:'[A-Za-z0-9_]+)?|[.,!?;:()\"'-]", text)
         enhanced_tokens = []
         i = 0
         while i < len(tokens):

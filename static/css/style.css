@@ -1,3 +1,15 @@
+.entity-ORGANIZATION { background-color: #e1f5fe; color: #0277bd; }
+.entity-CURRENCY { background-color: #fffde7; color: #fbc02d; }
+.entity-TRANSACTION { background-color: #f1f8e9; color: #689f38; }
+.entity-ACCOUNT { background-color: #ede7f6; color: #512da8; }
+
+.entity-DATE { background-color: #ffe0b2; color: #e65100; }
+.entity-ORGANIZATION { background-color: #e0f7fa; color: #006064; }
+.entity-FINANCIAL_METRIC { background-color: #f3e5f5; color: #4a148c; }
+.entity-PERCENTAGE_CHANGE { background-color: #f8bbd0; color: #ad1457; }
+.entity-STOCK_PRICE_CHANGE { background-color: #dcedc8; color: #33691e; }
+.entity-PERSON { background-color: #fff9c4; color: #f57f17; }
+.entity-SECTOR { background-color: #c8e6c9; color: #1b5e20; }
 * {
     margin: 0;
     padding: 0;

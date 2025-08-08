@@ -36,8 +36,10 @@ class FinanceEntityExtractor:
             patterns = self.entity_types[entity_type]['patterns']
             context_words = self.entity_types[entity_type].get('context_words', [])
             for pattern in patterns:
-                for token, start, end in token_spans:
-                    if re.fullmatch(pattern, token, re.IGNORECASE):
+                # If the pattern looks like a regex (contains \d, +, *, etc.), use re.finditer
+                if re.search(r'\\d|\\w|\+|\*|\[|\]|\(|\)|\{|\}|\^|\$|\.|\?', pattern):
+                    for match in re.finditer(pattern, text, re.IGNORECASE):
+                        start, end = match.span()
                         entity_text = text[start:end]
                         confidence = self._calculate_confidence(text_lower, start, end, context_words)
                         entities.append({
@@ -48,6 +50,19 @@ class FinanceEntityExtractor:
                             'confidence': confidence,
                             'pattern_matched': pattern
                         })
+                else:
+                    for token, start, end in token_spans:
+                        if re.fullmatch(pattern, token, re.IGNORECASE):
+                            entity_text = text[start:end]
+                            confidence = self._calculate_confidence(text_lower, start, end, context_words)
+                            entities.append({
+                                'text': entity_text,
+                                'start': start,
+                                'end': end,
+                                'type': entity_type,
+                                'confidence': confidence,
+                                'pattern_matched': pattern
+                            })
 
         entities = self._remove_overlapping_entities(entities)
         entities.sort(key=lambda x: x['start'])

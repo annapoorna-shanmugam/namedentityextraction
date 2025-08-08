@@ -133,12 +133,77 @@
     }
   },
   "finance_entities": {
-    "COMPANY": {
-      "patterns": ["company", "corporation", "inc", "ltd", "llc", "enterprise", "firm", "organization"],
-      "context_words": ["acquired", "merged", "partnered", "invested"]
+    "DATE": {
+      "patterns": [
+        "\\b(?:January|February|March|April|May|June|July|August|September|October|November|December) \\d{1,2}, \\d{4}\\b",
+        "\\b\\d{1,2}/\\d{1,2}/\\d{2,4}\\b",
+        "\\b\\d{4}-\\d{2}-\\d{2}\\b"
+      ],
+      "context_words": ["on", "as of", "dated"]
     },
+    "ORGANIZATION": {
+      "patterns": [
+        "\\b[A-Z][A-Za-z0-9&. ]+ (Corp|Inc|Ltd|LLC|Corporation|Company|Enterprises?)\\b",
+        "company", "corporation", "inc", "ltd", "llc", "enterprise", "firm", "organization"
+      ],
+      "context_words": ["acquired", "merged", "partnered", "invested", "reported", "announced"]
+    },
+    "FINANCIAL_METRIC": {
+      "patterns": [
+        "revenue of \\$\\s?\\d+[\\d,.]*\\s?(million|billion|thousand|m|bn|k)?",
+        "profit of \\$\\s?\\d+[\\d,.]*\\s?(million|billion|thousand|m|bn|k)?",
+        "earnings of \\$\\s?\\d+[\\d,.]*\\s?(million|billion|thousand|m|bn|k)?",
+        "quarterly revenue of \\$\\s?\\d+[\\d,.]*\\s?(million|billion|thousand|m|bn|k)?",
+        "net income of \\$\\s?\\d+[\\d,.]*\\s?(million|billion|thousand|m|bn|k)?"
+      ],
+      "context_words": ["reported", "announced", "posted"]
+    },
+    "PERCENTAGE_CHANGE": {
+      "patterns": [
+        "\\b\\d+\\.?\\d*% (increase|decrease|rise|drop|growth|decline|gain|loss)\\b",
+        "\\b(up|down|rose by|fell by|increased by|decreased by) \\d+\\.?\\d*%\\b"
+      ],
+      "context_words": ["from previous", "compared to", "following"]
+    },
+    "STOCK_PRICE_CHANGE": {
+      "patterns": [
+        "stock price (rose|increased|jumped|soared|fell|dropped|declined|plunged|slipped|advanced|retreated) by \\d+\\.?\\d*%",
+        "\\b\\d+\\.?\\d*% (rise|gain|loss|increase|decrease)\\b"
+      ],
+      "context_words": ["following", "after", "announcement"]
+    },
+    "PERSON": {
+      "patterns": [
+        "CEO [A-Z][a-z]+ [A-Z][a-z]+",
+        "\\b([A-Z][a-z]+\\s[A-Z][a-z]+)\\b"
+      ],
+      "context_words": ["CEO", "CFO", "President", "Manager", "Director", "attributed"]
+    },
+    "SECTOR": {
+      "patterns": [
+        "technology sector",
+        "finance sector",
+        "healthcare sector",
+        "energy sector",
+        "industrial sector",
+        "consumer sector",
+        "digital payment",
+        "digital payment service",
+        "digital payment services",
+        "\\b[A-Za-z]+ sector\\b"
+      ],
+      "context_words": ["in", "within", "from"]
+    },
+
     "CURRENCY": {
-      "patterns": ["usd", "eur", "gbp", "inr", "yen", "dollar", "euro", "rupee", "pound", "currency"],
+      "patterns": [
+        "usd", "eur", "gbp", "inr", "yen", "dollar", "euro", "rupee", "pound", "currency",
+        "\\$\\s?\\d+[\\d,.]*\\s?(million|billion|thousand|m|bn|k)?",
+        "€\\s?\\d+[\\d,.]*\\s?(million|billion|thousand|m|bn|k)?",
+        "£\\s?\\d+[\\d,.]*\\s?(million|billion|thousand|m|bn|k)?",
+        "¥\\s?\\d+[\\d,.]*\\s?(million|billion|thousand|m|bn|k)?",
+        "₹\\s?\\d+[\\d,.]*\\s?(million|billion|thousand|m|bn|k)?"
+      ],
       "context_words": ["converted", "exchanged", "valued at"]
     },
     "TRANSACTION": {
@@ -162,6 +227,22 @@
     "IPO": {
       "triggers": ["ipo", "public offering", "listed"],
       "attributes": ["company", "date", "value"]
+    },
+    "EARNINGS_REPORT": {
+      "triggers": [
+        "reported", "announced", "earnings", "quarterly results", "financial results",
+        "growth", "profit", "net income", "results", "quarterly revenue", "quarterly profit",
+        "revenue increase", "revenue growth", "reported revenue", "announced revenue"
+      ],
+      "attributes": ["company", "date", "amount", "growth", "period"]
+    },
+    "STOCK_MOVEMENT": {
+      "triggers": [
+        "increased", "decreased", "fell", "dropped", "stock price", "gained", "lost", "jumped", "plunged", "soared", "declined",
+        "rise", "gain", "loss", "up", "down", "surged", "slipped", "advanced", "retreated",
+        "price rose", "stock rose", "share price rose", "rose by", "rose to"
+      ],
+      "attributes": ["company", "date", "percent", "reason"]
     }
   },
   "healthcare_events": {

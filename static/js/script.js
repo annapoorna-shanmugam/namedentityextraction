@@ -223,32 +223,59 @@ function displayResults(data) {
 function displayHighlightedText(text, entities, events) {
     const container = document.getElementById('highlighted-text');
     
-    let annotatedText = text;
+    // Escape HTML special characters to prevent corruption
+    function escapeHtml(str) {
+        return str.replace(/[&<>"']/g, function(tag) {
+            const charsToReplace = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;'
+            };
+            return charsToReplace[tag] || tag;
+        });
+    }
+    let annotatedText = escapeHtml(text);
     let offset = 0;
     
     const allAnnotations = [
-        ...entities.map(e => ({...e, type: 'entity'})),
-        ...events.map(e => ({...e, type: 'event', text: e.trigger}))
-    ].sort((a, b) => a.start - b.start);
-    
+        ...entities.map(e => ({...e, annotationType: 'entity'})),
+        ...events.map(e => ({...e, annotationType: 'event', text: e.trigger}))
+    ].sort((a, b) => b.start - a.start); // Sort in reverse order
+
+    // Track covered regions to avoid overlapping/nested highlights
+    let covered = Array(annotatedText.length).fill(false);
+
     allAnnotations.forEach(annotation => {
-        const start = annotation.start + offset;
-        const end = annotation.end + offset;
+        const start = annotation.start;
+        const end = annotation.end;
+        // Skip if any part of this region is already covered
+        let overlap = false;
+        for (let i = start; i < end; i++) {
+            if (covered[i]) {
+                overlap = true;
+                break;
+            }
+        }
+        if (overlap) return;
+
         const currentText = annotatedText.substring(start, end);
-        
         let highlightClass, tooltip;
-        if (annotation.type === 'entity') {
-            highlightClass = `entity-highlight entity-${annotation.type || annotation.entity_type}`;
-            tooltip = `${annotation.type || annotation.entity_type} (${annotation.confidence || 'N/A'})`;
+        if (annotation.annotationType === 'entity') {
+            const entityType = annotation.type || annotation.entity_type;
+            highlightClass = `entity-highlight entity-${entityType}`;
+            tooltip = `${entityType} (${annotation.confidence || 'N/A'})`;
         } else {
             highlightClass = 'event-highlight';
             tooltip = `Event: ${annotation.event_type || annotation.type}`;
         }
-        
         const highlightedSpan = `<span class="${highlightClass}" title="${tooltip}">${currentText}</span>`;
-        
         annotatedText = annotatedText.substring(0, start) + highlightedSpan + annotatedText.substring(end);
-        offset += highlightedSpan.length - currentText.length;
+        // Mark this region as covered
+        for (let i = start; i < start + highlightedSpan.length; i++) {
+            covered[i] = true;
+        }
     });
     
     container.innerHTML = annotatedText;
