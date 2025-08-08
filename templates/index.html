@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Healthcare Named Entity and Event Extraction System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-heartbeat"></i> Healthcare NER & Event Extraction System</h1>
+            <p>Extract named entities and events from healthcare text using domain-specific rules</p>
+        </header>
+
+        <div class="main-content">
+            <div class="input-section">
+                <div class="tabs">
+                    <button class="tab-button active" onclick="switchTab('text')">
+                        <i class="fas fa-edit"></i> Text Input
+                    </button>
+                    <button class="tab-button" onclick="switchTab('file')">
+                        <i class="fas fa-upload"></i> File Upload
+                    </button>
+                    <button class="tab-button" onclick="switchTab('sample')">
+                        <i class="fas fa-file-medical"></i> Sample Data
+                    </button>
+                </div>
+
+                <div id="text-tab" class="tab-content active">
+                    <div class="form-group">
+                        <label for="input-text">Enter Healthcare Text:</label>
+                        <textarea id="input-text" placeholder="Paste your healthcare text here for entity and event extraction..."></textarea>
+                    </div>
+                </div>
+
+                <div id="file-tab" class="tab-content">
+                    <div class="form-group">
+                        <label for="file-input">Upload Text File:</label>
+                        <div class="file-input-wrapper">
+                            <input type="file" id="file-input" accept=".txt,.csv">
+                            <label for="file-input" class="file-input-label">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                Choose File
+                            </label>
+                        </div>
+                        <div id="file-info"></div>
+                    </div>
+                </div>
+
+                <div id="sample-tab" class="tab-content">
+                    <div class="form-group">
+                        <label>Select Sample Text:</label>
+                        <div id="sample-texts"></div>
+                    </div>
+                </div>
+
+                <div class="controls">
+                    <div class="entity-selection">
+                        <label>Entity Types to Extract:</label>
+                        <div id="entity-checkboxes"></div>
+                    </div>
+                    
+                    <div class="confidence-slider">
+                        <label for="confidence-range">Minimum Confidence: <span id="confidence-value">0.5</span></label>
+                        <input type="range" id="confidence-range" min="0" max="1" step="0.1" value="0.5">
+                    </div>
+                    
+                    <button id="extract-btn" class="btn-primary">
+                        <i class="fas fa-search"></i> Extract Entities & Events
+                    </button>
+                </div>
+            </div>
+
+            <div class="results-section">
+                <div class="results-header">
+                    <h2>Extraction Results</h2>
+                    <div class="results-controls">
+                        <button id="export-json" class="btn-secondary" disabled>
+                            <i class="fas fa-download"></i> Export JSON
+                        </button>
+                        <button id="export-csv" class="btn-secondary" disabled>
+                            <i class="fas fa-file-csv"></i> Export CSV
+                        </button>
+                    </div>
+                </div>
+
+                <div class="results-tabs">
+                    <button class="result-tab-button active" onclick="switchResultTab('highlighted')">
+                        <i class="fas fa-highlighter"></i> Highlighted Text
+                    </button>
+                    <button class="result-tab-button" onclick="switchResultTab('entities')">
+                        <i class="fas fa-tags"></i> Entities
+                    </button>
+                    <button class="result-tab-button" onclick="switchResultTab('events')">
+                        <i class="fas fa-calendar-alt"></i> Events
+                    </button>
+                    <button class="result-tab-button" onclick="switchResultTab('statistics')">
+                        <i class="fas fa-chart-bar"></i> Statistics
+                    </button>
+                </div>
+
+                <div id="highlighted-tab" class="result-tab-content active">
+                    <div id="highlighted-text"></div>
+                </div>
+
+                <div id="entities-tab" class="result-tab-content">
+                    <div class="filter-controls">
+                        <input type="text" id="entity-filter" placeholder="Filter entities...">
+                        <select id="entity-type-filter">
+                            <option value="">All Types</option>
+                        </select>
+                    </div>
+                    <div id="entities-list"></div>
+                </div>
+
+                <div id="events-tab" class="result-tab-content">
+                    <div class="filter-controls">
+                        <input type="text" id="event-filter" placeholder="Filter events...">
+                        <select id="event-type-filter">
+                            <option value="">All Types</option>
+                        </select>
+                    </div>
+                    <div id="events-list"></div>
+                </div>
+
+                <div id="statistics-tab" class="result-tab-content">
+                    <div id="statistics-content"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="loading" class="loading hidden">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Processing text...</p>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

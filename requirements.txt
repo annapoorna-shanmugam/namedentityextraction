@@ -1,0 +1,6 @@
+Flask
+flask-cors
+spacy
+numpy
+pandas
+werkzeug

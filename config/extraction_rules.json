@@ -1,0 +1,156 @@
+{
+  "healthcare_entities": {
+    "PATIENT": {
+      "patterns": [
+        "patient",
+        "Mr\\.",
+        "Mrs\\.",
+        "Ms\\.",
+        "Dr\\.",
+        "individual",
+        "subject"
+      ],
+      "context_words": ["diagnosed", "treated", "admitted", "discharged"]
+    },
+    "MEDICATION": {
+      "patterns": [
+        "aspirin",
+        "ibuprofen",
+        "acetaminophen",
+        "metformin",
+        "lisinopril",
+        "amlodipine",
+        "simvastatin",
+        "omeprazole",
+        "levothyroxine",
+        "albuterol",
+        "insulin",
+        "warfarin",
+        "prednisone",
+        "hydrochlorothiazide",
+        "losartan",
+        "mg",
+        "tablet",
+        "capsule",
+        "injection",
+        "dose",
+        "dosage"
+      ],
+      "context_words": ["prescribed", "administered", "taken", "given", "injected"]
+    },
+    "DISEASE": {
+      "patterns": [
+        "diabetes",
+        "hypertension",
+        "asthma",
+        "pneumonia",
+        "bronchitis",
+        "influenza",
+        "covid-19",
+        "coronavirus",
+        "heart disease",
+        "stroke",
+        "cancer",
+        "tumor",
+        "infection",
+        "fever",
+        "headache",
+        "migraine",
+        "depression",
+        "anxiety",
+        "arthritis",
+        "osteoporosis"
+      ],
+      "context_words": ["diagnosed with", "suffering from", "history of", "symptoms of"]
+    },
+    "TREATMENT": {
+      "patterns": [
+        "surgery",
+        "operation",
+        "procedure",
+        "therapy",
+        "treatment",
+        "chemotherapy",
+        "radiation",
+        "dialysis",
+        "transplant",
+        "biopsy",
+        "endoscopy",
+        "mri",
+        "ct scan",
+        "x-ray",
+        "ultrasound",
+        "blood test"
+      ],
+      "context_words": ["underwent", "received", "scheduled for", "completed"]
+    },
+    "SYMPTOM": {
+      "patterns": [
+        "pain",
+        "swelling",
+        "rash",
+        "nausea",
+        "vomiting",
+        "diarrhea",
+        "constipation",
+        "fatigue",
+        "weakness",
+        "dizziness",
+        "shortness of breath",
+        "chest pain",
+        "abdominal pain",
+        "back pain",
+        "joint pain"
+      ],
+      "context_words": ["experiencing", "complaining of", "reports", "presents with"]
+    },
+    "BODY_PART": {
+      "patterns": [
+        "heart",
+        "lung",
+        "kidney",
+        "liver",
+        "brain",
+        "stomach",
+        "intestine",
+        "spine",
+        "knee",
+        "shoulder",
+        "hip",
+        "ankle",
+        "wrist",
+        "chest",
+        "abdomen",
+        "head",
+        "neck"
+      ],
+      "context_words": ["in the", "of the", "located in"]
+    }
+  },
+  "healthcare_events": {
+    "ADMISSION": {
+      "triggers": ["admitted", "hospitalized", "checked in"],
+      "attributes": ["date", "hospital", "reason", "patient"]
+    },
+    "DISCHARGE": {
+      "triggers": ["discharged", "released", "sent home"],
+      "attributes": ["date", "condition", "instructions", "patient"]
+    },
+    "DIAGNOSIS": {
+      "triggers": ["diagnosed", "found to have", "identified with"],
+      "attributes": ["disease", "patient", "date", "physician"]
+    },
+    "PRESCRIPTION": {
+      "triggers": ["prescribed", "given medication", "started on"],
+      "attributes": ["medication", "dosage", "frequency", "patient"]
+    },
+    "SURGERY": {
+      "triggers": ["surgery", "operation", "surgical procedure"],
+      "attributes": ["procedure", "patient", "date", "surgeon", "outcome"]
+    },
+    "TEST_RESULT": {
+      "triggers": ["test showed", "results indicate", "lab values"],
+      "attributes": ["test_type", "result", "normal_range", "patient"]
+    }
+  }
+}

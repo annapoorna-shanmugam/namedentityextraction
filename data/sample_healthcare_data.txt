@@ -1,0 +1,124 @@
+Patient Medical Records Sample Data
+
+Record 1:
+Patient: John Smith, 45-year-old male
+Date of Admission: March 15, 2024
+Chief Complaint: Chest pain and shortness of breath
+
+History of Present Illness:
+Mr. Smith presented to the emergency department with acute onset chest pain radiating to his left arm. The pain was described as crushing and lasted for approximately 30 minutes. He also experienced shortness of breath and diaphoresis. The patient has a history of hypertension and diabetes mellitus type 2.
+
+Physical Examination:
+Vital signs: Blood pressure 150/95 mmHg, heart rate 95 bpm, temperature 98.6°F
+Cardiovascular: Regular rhythm, no murmurs
+Respiratory: Clear to auscultation bilaterally
+
+Diagnostic Tests:
+ECG showed ST-elevation in leads II, III, and aVF
+Troponin I: 15.2 ng/mL (elevated)
+CK-MB: 45 U/L (elevated)
+
+Diagnosis: ST-elevation myocardial infarction (STEMI) - inferior wall
+
+Treatment:
+1. Aspirin 325mg chewed immediately
+2. Clopidogrel 600mg loading dose
+3. Atorvastatin 80mg daily
+4. Metoprolol 25mg twice daily
+5. Emergency cardiac catheterization performed
+6. Percutaneous coronary intervention with drug-eluting stent placement
+
+Medications at Discharge:
+- Aspirin 81mg daily
+- Clopidogrel 75mg daily  
+- Atorvastatin 40mg daily
+- Metoprolol 50mg twice daily
+- Lisinopril 10mg daily
+- Metformin 1000mg twice daily
+
+Discharge Date: March 20, 2024
+Follow-up: Cardiology clinic in 1 week
+
+---
+
+Record 2:
+Patient: Sarah Johnson, 32-year-old female
+Date: April 8, 2024
+Chief Complaint: Abdominal pain and nausea
+
+History:
+Mrs. Johnson, a 32-year-old previously healthy female, presented with acute right lower quadrant abdominal pain that started 6 hours ago. The pain is sharp, constant, and worsened with movement. She reports nausea and one episode of vomiting. No fever reported.
+
+Physical Examination:
+Temperature: 99.2°F, BP: 125/80 mmHg, HR: 88 bpm
+Abdomen: Tender to palpation in right lower quadrant, positive McBurney's sign
+Rebound tenderness present
+
+Laboratory Results:
+White blood cell count: 12,500/μL (elevated)
+Neutrophils: 85% (elevated)
+CRP: 8.5 mg/L (elevated)
+
+Imaging:
+CT scan of abdomen and pelvis showed appendiceal wall thickening and periappendiceal fat stranding consistent with acute appendicitis.
+
+Diagnosis: Acute appendicitis
+
+Treatment:
+Emergency laparoscopic appendectomy performed on April 8, 2024
+Surgery was uncomplicated with removal of inflamed appendix
+
+Post-operative Medications:
+- Ibuprofen 400mg every 6 hours for pain
+- Ondansetron 4mg as needed for nausea
+
+Discharge: April 10, 2024
+Post-operative instructions provided
+Follow-up in surgery clinic in 2 weeks
+
+---
+
+Record 3:
+Patient: Robert Davis, 68-year-old male
+Date: May 12, 2024
+Chief Complaint: Shortness of breath and leg swelling
+
+History:
+Mr. Davis is a 68-year-old male with a history of coronary artery disease and previous myocardial infarction who presents with progressive shortness of breath over the past 2 weeks. He reports orthopnea and paroxysmal nocturnal dyspnea. He has noticed bilateral lower extremity swelling.
+
+Past Medical History:
+- Coronary artery disease with previous MI (2019)
+- Hypertension
+- Hyperlipidemia
+- Type 2 diabetes mellitus
+
+Physical Examination:
+Vitals: BP 140/90 mmHg, HR 110 bpm, O2 sat 92% on room air
+Cardiovascular: S3 gallop, jugular venous distension
+Respiratory: Bilateral crackles at lung bases
+Extremities: 2+ pitting edema to mid-shin bilaterally
+
+Diagnostic Tests:
+Chest X-ray: Cardiomegaly, pulmonary vascular congestion
+Echocardiogram: Ejection fraction 30%, left ventricular dysfunction
+BNP: 850 pg/mL (elevated)
+
+Diagnosis: Congestive heart failure with reduced ejection fraction (HFrEF)
+
+Treatment Initiated:
+1. Furosemide 40mg daily (diuretic)
+2. Lisinopril 5mg daily (ACE inhibitor)
+3. Carvedilol 3.125mg twice daily (beta-blocker)
+4. Spironolactone 25mg daily (aldosterone antagonist)
+
+Patient Education:
+- Daily weight monitoring
+- Sodium restriction (2g daily)
+- Fluid restriction (2L daily)
+
+Monitoring:
+- Weekly lab checks for electrolytes and kidney function
+- Cardiology follow-up in 2 weeks
+
+Current Status: Stable, responding to treatment
+Patient showed improvement in symptoms with decrease in edema and improved exercise tolerance.
