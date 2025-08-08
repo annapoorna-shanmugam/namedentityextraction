@@ -34,7 +34,12 @@
         "capsule",
         "injection",
         "dose",
-        "dosage"
+        "dosage",
+        "\\b\\d+mg\\b",
+        "\\b\\d+ml\\b",
+        "\\b\\d+ units\\b",
+        "\\b\\d+ tablets?\\b",
+        "\\b\\d+ capsules?\\b"
       ],
       "context_words": ["prescribed", "administered", "taken", "given", "injected"]
     },

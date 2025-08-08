@@ -32,7 +32,7 @@ def install_requirements():
 def test_imports():
     """Test if all modules can be imported"""
     try:
-        from entity_extractor import HealthcareEntityExtractor
+        from healthcare_entity_extractor import HealthcareEntityExtractor
         from event_extractor import HealthcareEventExtractor
         from healthcare_tokenizer import HealthcareTokenizer
         import flask

@@ -5,16 +5,24 @@ import os
 from datetime import datetime
 import csv
 import io
-from entity_extractor import HealthcareEntityExtractor
-from event_extractor import HealthcareEventExtractor
+from healthcare_entity_extractor import HealthcareEntityExtractor
+from finance_entity_extractor import FinanceEntityExtractor
+from healthcare_event_extractor import HealthcareEventExtractor
+from finance_event_extractor import FinanceEventExtractor
 
 app = Flask(__name__)
 CORS(app)
 
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
-entity_extractor = HealthcareEntityExtractor()
-event_extractor = HealthcareEventExtractor()
+entity_extractors = {
+    'healthcare': HealthcareEntityExtractor(),
+    'finance': FinanceEntityExtractor()
+}
+event_extractors = {
+    'healthcare': HealthcareEventExtractor(),
+    'finance': FinanceEventExtractor()
+}
 
 @app.route('/')
 def index():
@@ -32,12 +40,13 @@ def extract_entities_and_events():
         if not text.strip():
             return jsonify({'error': 'No text provided'}), 400
 
-        # Pass domain to entity extractor if supported, else use logic to select config
-        entities = entity_extractor.extract_entities(text, selected_entities, domain=domain) if 'domain' in entity_extractor.extract_entities.__code__.co_varnames else entity_extractor.extract_entities(text, selected_entities)
-        entities = entity_extractor.filter_entities_by_confidence(entities, min_confidence)
-        events = event_extractor.extract_events(text, entities)
-        entity_stats = entity_extractor.get_entity_statistics(entities)
-        event_stats = event_extractor.get_event_statistics(events)
+        extractor = entity_extractors.get(domain, entity_extractors['healthcare'])
+        event_extractor_obj = event_extractors.get(domain, event_extractors['healthcare'])
+        entities = extractor.extract_entities(text, selected_entities)
+        entities = extractor.filter_entities_by_confidence(entities, min_confidence)
+        events = event_extractor_obj.extract_events(text, entities)
+        entity_stats = extractor.get_entity_statistics(entities)
+        event_stats = event_extractor_obj.get_event_statistics(events)
         response = {
             'entities': entities,
             'events': events,
@@ -67,11 +76,13 @@ def upload_file():
         selected_entities = request.form.getlist('entity_types')
         min_confidence = float(request.form.get('min_confidence', 0.5))
         domain = request.form.get('domain', 'healthcare')
-        entities = entity_extractor.extract_entities(content, selected_entities, domain=domain) if 'domain' in entity_extractor.extract_entities.__code__.co_varnames else entity_extractor.extract_entities(content, selected_entities)
-        entities = entity_extractor.filter_entities_by_confidence(entities, min_confidence)
-        events = event_extractor.extract_events(content, entities)
-        entity_stats = entity_extractor.get_entity_statistics(entities)
-        event_stats = event_extractor.get_event_statistics(events)
+        extractor = entity_extractors.get(domain, entity_extractors['healthcare'])
+        event_extractor_obj = event_extractors.get(domain, event_extractors['healthcare'])
+        entities = extractor.extract_entities(content, selected_entities)
+        entities = extractor.filter_entities_by_confidence(entities, min_confidence)
+        events = event_extractor_obj.extract_events(content, entities)
+        entity_stats = extractor.get_entity_statistics(entities)
+        event_stats = event_extractor_obj.get_event_statistics(events)
         response = {
             'entities': entities,
             'events': events,
