@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 async function initializeApp() {
-    await loadDomains();
+    //await loadDomains();
     await loadEntityTypes();
     loadSampleTexts();
     setupEventListeners();
@@ -22,9 +22,9 @@ function setupEventListeners() {
     document.getElementById('entity-type-filter').addEventListener('change', filterEntities);
     document.getElementById('event-filter').addEventListener('input', filterEvents);
     document.getElementById('event-type-filter').addEventListener('change', filterEvents);
-    document.getElementById('domain-select').addEventListener('change', async function() {
-        await loadEntityTypes();
-    });
+    // document.getElementById('domain-select').addEventListener('change', async function() {
+    //     await loadEntityTypes();
+    // });
 }
 
 function switchTab(tabName, el) {
@@ -68,7 +68,8 @@ async function loadDomains() {
 
 async function loadEntityTypes() {
     try {
-        const domain = document.getElementById('domain-select').value || 'healthcare';
+        // const domain = document.getElementById('domain-select').value || 'healthcare';
+        const domain = 'healthcare';
         const response = await fetch(`/api/entity-types?domain=${domain}`);
         const data = await response.json();
         const container = document.getElementById('entity-checkboxes');
@@ -148,7 +149,7 @@ async function extractEntitiesAndEvents() {
     let text = '';
     let selectedEntityTypes = [];
     let minConfidence = parseFloat(document.getElementById('confidence-range').value);
-    const domain = document.getElementById('domain-select').value || 'healthcare';
+    const domain = /*document.getElementById('domain-select').value ||*/ 'healthcare';
     const checkboxes = document.querySelectorAll('#entity-checkboxes input[type="checkbox"]:checked');
     checkboxes.forEach(cb => selectedEntityTypes.push(cb.value));
     showLoading();

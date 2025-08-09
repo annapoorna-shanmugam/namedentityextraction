@@ -6,9 +6,7 @@ from datetime import datetime
 import csv
 import io
 from healthcare_entity_extractor import HealthcareEntityExtractor
-from finance_entity_extractor import FinanceEntityExtractor
 from healthcare_event_extractor import HealthcareEventExtractor
-from finance_event_extractor import FinanceEventExtractor
 
 app = Flask(__name__)
 CORS(app)
@@ -16,12 +14,10 @@ CORS(app)
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
 entity_extractors = {
-    'healthcare': HealthcareEntityExtractor(),
-    'finance': FinanceEntityExtractor()
+    'healthcare': HealthcareEntityExtractor()
 }
 event_extractors = {
-    'healthcare': HealthcareEventExtractor(),
-    'finance': FinanceEventExtractor()
+    'healthcare': HealthcareEventExtractor()
 }
 
 @app.route('/')
@@ -192,23 +188,12 @@ def get_entity_types():
 @app.route('/api/sample-data')
 def get_sample_data():
     domain = request.args.get('domain', 'healthcare')
-    if domain == 'finance':
-        # Read from the sample_finance_data.txt file
-        sample_texts = [
-                "On January 10, 2024, ABC Corp reported a quarterly revenue of $5.2 million, marking a 10% increase from the previous quarter. The company's stock price rose by 3% following the announcement. CEO John Smith attributed the growth to strong sales in the technology sector.",
-                "Jane Doe received a wire transfer of $15,000 from XYZ Investments on March 5, 2024, as part of her annual dividend payout. The funds were deposited into her Chase Bank account ending in 1234.",
-                "The Federal Reserve announced an interest rate hike of 0.25% on February 1, 2024, citing concerns about inflation. Major banks, including Bank of America and Wells Fargo, adjusted their lending rates accordingly.",
-                "On April 12, 2024, Global Finance Inc. acquired a 40% stake in FinTech Solutions for $20 million. The acquisition aims to expand Global Finance's digital payment services in Asia.",
-                "A credit card transaction of $2,500 was flagged as suspicious by the fraud detection system at Capital One on March 18, 2024. The cardholder, Michael Lee, was notified and the transaction was reversed."
-            ]
-            
-    else:
         # Default: healthcare
-        sample_texts = [
-                "Patient John Doe was admitted to General Hospital on March 15, 2024, with complaints of chest pain and shortness of breath. He was diagnosed with acute myocardial infarction and started on aspirin 81mg daily and metoprolol 25mg twice daily. Blood tests showed elevated troponin levels. The patient underwent cardiac catheterization and was discharged on March 20, 2024, with instructions for follow-up in cardiology clinic.",
-                "Mrs. Sarah Johnson, a 65-year-old female, presented to the emergency room with severe abdominal pain. CT scan revealed appendicitis. She underwent emergency appendectomy on April 3, 2024. Post-operative recovery was uncomplicated. She was prescribed ibuprofen 400mg for pain management and discharged home the following day.",
-                "The patient was diagnosed with Type 2 diabetes mellitus during routine screening. HbA1c was 8.2%. Started on metformin 500mg twice daily. Patient education on diet and exercise was provided. Follow-up appointment scheduled in 3 months to monitor blood glucose levels and medication effectiveness."
-            ]
+    sample_texts = [
+            "Patient John Doe was admitted to General Hospital on March 15, 2024, with complaints of chest pain and shortness of breath. He was diagnosed with acute myocardial infarction and started on aspirin 81mg daily and metoprolol 25mg twice daily. Blood tests showed elevated troponin levels. The patient underwent cardiac catheterization and was discharged on March 20, 2024, with instructions for follow-up in cardiology clinic.",
+            "Mrs. Sarah Johnson, a 65-year-old female, presented to the emergency room with severe abdominal pain. CT scan revealed appendicitis. She underwent emergency appendectomy on April 3, 2024. Post-operative recovery was uncomplicated. She was prescribed ibuprofen 400mg for pain management and discharged home the following day.",
+            "The patient was diagnosed with Type 2 diabetes mellitus during routine screening. HbA1c was 8.2%. Started on metformin 500mg twice daily. Patient education on diet and exercise was provided. Follow-up appointment scheduled in 3 months to monitor blood glucose levels and medication effectiveness."
+        ]
             
     return jsonify({'sample_texts': sample_texts})
 
