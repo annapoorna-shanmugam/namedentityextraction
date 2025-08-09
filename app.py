@@ -201,14 +201,6 @@ def get_sample_data():
                 "On April 12, 2024, Global Finance Inc. acquired a 40% stake in FinTech Solutions for $20 million. The acquisition aims to expand Global Finance's digital payment services in Asia.",
                 "A credit card transaction of $2,500 was flagged as suspicious by the fraud detection system at Capital One on March 18, 2024. The cardholder, Michael Lee, was notified and the transaction was reversed."
             ]
-        # try:
-        #     with open('data/sample_finance_data.txt', 'r') as f:
-        #         finance_text = f.read()
-        #     # Split into records for UI display (split by double newlines)
-        #     sample_texts = [rec.strip() for rec in finance_text.split('\n\n') if rec.strip()]
-        # except Exception:
-        #     # Fallback to hardcoded examples if file not found
-        #     sample_texts = []
             
     else:
         # Default: healthcare
@@ -217,13 +209,6 @@ def get_sample_data():
                 "Mrs. Sarah Johnson, a 65-year-old female, presented to the emergency room with severe abdominal pain. CT scan revealed appendicitis. She underwent emergency appendectomy on April 3, 2024. Post-operative recovery was uncomplicated. She was prescribed ibuprofen 400mg for pain management and discharged home the following day.",
                 "The patient was diagnosed with Type 2 diabetes mellitus during routine screening. HbA1c was 8.2%. Started on metformin 500mg twice daily. Patient education on diet and exercise was provided. Follow-up appointment scheduled in 3 months to monitor blood glucose levels and medication effectiveness."
             ]
-        # try:
-        #     with open('data/sample_healthcare_data.txt', 'r') as f:
-        #         healthcare_text = f.read()
-        #     sample_texts = [rec.strip() for rec in healthcare_text.split('\n---\n') if rec.strip()]
-        # except Exception:
-        #     # Fallback to hardcoded examples if file not found
-        #     sample_texts=[]
             
     return jsonify({'sample_texts': sample_texts})
 

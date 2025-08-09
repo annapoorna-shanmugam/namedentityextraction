@@ -10,7 +10,12 @@
         "individual",
         "subject"
       ],
-      "context_words": ["diagnosed", "treated", "admitted", "discharged"]
+      "context_words": [
+        "diagnosed",
+        "treated",
+        "admitted",
+        "discharged"
+      ]
     },
     "MEDICATION": {
       "patterns": [
@@ -41,7 +46,13 @@
         "\\b\\d+ tablets?\\b",
         "\\b\\d+ capsules?\\b"
       ],
-      "context_words": ["prescribed", "administered", "taken", "given", "injected"]
+      "context_words": [
+        "prescribed",
+        "administered",
+        "taken",
+        "given",
+        "injected"
+      ]
     },
     "DISEASE": {
       "patterns": [
@@ -66,7 +77,12 @@
         "arthritis",
         "osteoporosis"
       ],
-      "context_words": ["diagnosed with", "suffering from", "history of", "symptoms of"]
+      "context_words": [
+        "diagnosed with",
+        "suffering from",
+        "history of",
+        "symptoms of"
+      ]
     },
     "TREATMENT": {
       "patterns": [
@@ -87,7 +103,12 @@
         "ultrasound",
         "blood test"
       ],
-      "context_words": ["underwent", "received", "scheduled for", "completed"]
+      "context_words": [
+        "underwent",
+        "received",
+        "scheduled for",
+        "completed"
+      ]
     },
     "SYMPTOM": {
       "patterns": [
@@ -107,7 +128,12 @@
         "back pain",
         "joint pain"
       ],
-      "context_words": ["experiencing", "complaining of", "reports", "presents with"]
+      "context_words": [
+        "experiencing",
+        "complaining of",
+        "reports",
+        "presents with"
+      ]
     },
     "BODY_PART": {
       "patterns": [
@@ -129,7 +155,11 @@
         "head",
         "neck"
       ],
-      "context_words": ["in the", "of the", "located in"]
+      "context_words": [
+        "in the",
+        "of the",
+        "located in"
+      ]
     }
   },
   "finance_entities": {
@@ -139,45 +169,71 @@
         "\\b\\d{1,2}/\\d{1,2}/\\d{2,4}\\b",
         "\\b\\d{4}-\\d{2}-\\d{2}\\b"
       ],
-      "context_words": ["on", "as of", "dated"]
+      "context_words": [
+        "on",
+        "as of",
+        "dated"
+      ]
     },
     "ORGANIZATION": {
       "patterns": [
-        "\\b[A-Z][A-Za-z0-9&. ]+ (Corp|Inc|Ltd|LLC|Corporation|Company|Enterprises?)\\b",
-        "company", "corporation", "inc", "ltd", "llc", "enterprise", "firm", "organization"
+        "\\b[A-Z][A-Za-z0-9&.]+(?:\\s+[A-Z][A-Za-z0-9&.]+)*\\s+(?:Corp|Inc|Ltd|LLC|Corporation|Company|Enterprises?)\\b",
+        "\\b[A-Z]{2,}(?:\\s+[A-Z]{2,})*\\s+(?:Corp|Inc|Ltd|LLC|Corporation|Company|Enterprises?)\\b"
       ],
-      "context_words": ["acquired", "merged", "partnered", "invested", "reported", "announced"]
+      "context_words": [
+        "acquired",
+        "merged",
+        "partnered",
+        "invested",
+        "reported",
+        "announced"
+      ]
     },
     "FINANCIAL_METRIC": {
       "patterns": [
-        "revenue of \\$\\s?\\d+[\\d,.]*\\s?(million|billion|thousand|m|bn|k)?",
-        "profit of \\$\\s?\\d+[\\d,.]*\\s?(million|billion|thousand|m|bn|k)?",
-        "earnings of \\$\\s?\\d+[\\d,.]*\\s?(million|billion|thousand|m|bn|k)?",
-        "quarterly revenue of \\$\\s?\\d+[\\d,.]*\\s?(million|billion|thousand|m|bn|k)?",
-        "net income of \\$\\s?\\d+[\\d,.]*\\s?(million|billion|thousand|m|bn|k)?"
+        "(?i)\\b(?:quarterly\\s+)?revenue\\s+of\\s+\\$\\s?\\d[\\d,]*(?:\\.\\d+)?\\s?(?:million|billion|thousand|m|bn|k)?\\b",
+        "(?i)\\bprofit\\s+of\\s+\\$\\s?\\d[\\d,]*(?:\\.\\d+)?\\s?(?:million|billion|thousand|m|bn|k)?\\b",
+        "(?i)\\bearnings\\s+of\\s+\\$\\s?\\d[\\d,]*(?:\\.\\d+)?\\s?(?:million|billion|thousand|m|bn|k)?\\b",
+        "(?i)\\bnet\\s+income\\s+of\\s+\\$\\s?\\d[\\d,]*(?:\\.\\d+)?\\s?(?:million|billion|thousand|m|bn|k)?\\b"
       ],
-      "context_words": ["reported", "announced", "posted"]
+      "context_words": [
+        "reported",
+        "announced",
+        "posted"
+      ]
     },
     "PERCENTAGE_CHANGE": {
       "patterns": [
-        "\\b\\d+\\.?\\d*% (increase|decrease|rise|drop|growth|decline|gain|loss)\\b",
-        "\\b(up|down|rose by|fell by|increased by|decreased by) \\d+\\.?\\d*%\\b"
+        "(?i)\\b(?:\\d+(?:\\.\\d+)?)%\\s*(?:increase|decrease|rise|drop|growth|decline|gain|loss)\\b|\\b(?:up|down|rose by|fell by|increased by|decreased by)\\s*\\d+(?:\\.\\d+)?%\\b"
       ],
-      "context_words": ["from previous", "compared to", "following"]
-    },
-    "STOCK_PRICE_CHANGE": {
-      "patterns": [
-        "stock price (rose|increased|jumped|soared|fell|dropped|declined|plunged|slipped|advanced|retreated) by \\d+\\.?\\d*%",
-        "\\b\\d+\\.?\\d*% (rise|gain|loss|increase|decrease)\\b"
-      ],
-      "context_words": ["following", "after", "announcement"]
+      "context_words": [
+        "from previous",
+        "compared to",
+        "following"
+      ]
     },
     "PERSON": {
       "patterns": [
-        "CEO [A-Z][a-z]+ [A-Z][a-z]+",
-        "\\b([A-Z][a-z]+\\s[A-Z][a-z]+)\\b"
+        "CEO",
+        "CFO",
+        "President",
+        "Manager",
+        "Director",
+        "Mr\\.",
+        "Mrs\\.",
+        "Ms\\.",
+        "Dr\\.",
+        "Prof",
+        "\\b([A-Z][a-z]+\\s[A-Z][a-z]{2,})\\b"
       ],
-      "context_words": ["CEO", "CFO", "President", "Manager", "Director", "attributed"]
+      "context_words": [
+        "CEO",
+        "CFO",
+        "President",
+        "Manager",
+        "Director",
+        "attributed"
+      ]
     },
     "SECTOR": {
       "patterns": [
@@ -189,86 +245,251 @@
         "consumer sector",
         "digital payment",
         "digital payment service",
-        "digital payment services",
-        "\\b[A-Za-z]+ sector\\b"
+        "digital payment services"
       ],
-      "context_words": ["in", "within", "from"]
+      "context_words": [
+        "in",
+        "within",
+        "from"
+      ]
     },
-
     "CURRENCY": {
       "patterns": [
-        "usd", "eur", "gbp", "inr", "yen", "dollar", "euro", "rupee", "pound", "currency",
-        "\\$\\s?\\d+[\\d,.]*\\s?(million|billion|thousand|m|bn|k)?",
-        "€\\s?\\d+[\\d,.]*\\s?(million|billion|thousand|m|bn|k)?",
-        "£\\s?\\d+[\\d,.]*\\s?(million|billion|thousand|m|bn|k)?",
-        "¥\\s?\\d+[\\d,.]*\\s?(million|billion|thousand|m|bn|k)?",
-        "₹\\s?\\d+[\\d,.]*\\s?(million|billion|thousand|m|bn|k)?"
+        "usd",
+        "eur",
+        "gbp",
+        "inr",
+        "yen",
+        "dollar",
+        "euro",
+        "rupee",
+        "pound",
+        "currency",
+        "\\$\\s?\\d[\\d,]*(?:\\.\\d+)?\\s?(?:million|billion|thousand|m|bn|k)?",
+        "€\\s?\\d[\\d,]*(?:\\.\\d+)?\\s?(?:million|billion|thousand|m|bn|k)?",
+        "£\\s?\\d[\\d,]*(?:\\.\\d+)?\\s?(?:million|billion|thousand|m|bn|k)?",
+        "¥\\s?\\d[\\d,]*(?:\\.\\d+)?\\s?(?:million|billion|thousand|m|bn|k)?",
+        "₹\\s?\\d[\\d,]*(?:\\.\\d+)?\\s?(?:million|billion|thousand|m|bn|k)?"
       ],
-      "context_words": ["converted", "exchanged", "valued at"]
+      "context_words": [
+        "converted",
+        "exchanged",
+        "valued at"
+      ]
     },
     "TRANSACTION": {
-      "patterns": ["transaction", "payment", "transfer", "deposit", "withdrawal", "purchase", "sale", "deal"],
-      "context_words": ["completed", "initiated", "pending", "failed"]
+      "patterns": [
+        "transaction",
+        "payment",
+        "transfer",
+        "deposit",
+        "withdrawal",
+        "purchase",
+        "sale",
+        "deal"
+      ],
+      "context_words": [
+        "completed",
+        "initiated",
+        "pending",
+        "failed"
+      ]
     },
     "ACCOUNT": {
-      "patterns": ["account", "bank account", "savings", "checking", "current account", "number"],
-      "context_words": ["opened", "closed", "credited", "debited"]
+      "patterns": [
+        "account",
+        "bank account",
+        "savings",
+        "checking",
+        "current account",
+        "number"
+      ],
+      "context_words": [
+        "opened",
+        "closed",
+        "credited",
+        "debited"
+      ]
     }
   },
   "finance_events": {
     "MERGER": {
-      "triggers": ["merged", "acquired", "consolidated"],
-      "attributes": ["company1", "company2", "date", "value"]
+      "triggers": [
+        "merged",
+        "acquired",
+        "consolidated"
+      ],
+      "attributes": [
+        "company1",
+        "company2",
+        "date",
+        "value"
+      ]
     },
     "TRANSACTION": {
-      "triggers": ["transaction", "payment", "transfer"],
-      "attributes": ["amount", "currency", "date", "account"]
+      "triggers": [
+        "transaction",
+        "payment",
+        "transfer"
+      ],
+      "attributes": [
+        "amount",
+        "currency",
+        "date",
+        "account"
+      ]
     },
     "IPO": {
-      "triggers": ["ipo", "public offering", "listed"],
-      "attributes": ["company", "date", "value"]
+      "triggers": [
+        "ipo",
+        "public offering",
+        "listed"
+      ],
+      "attributes": [
+        "company",
+        "date",
+        "value"
+      ]
     },
     "EARNINGS_REPORT": {
       "triggers": [
-        "reported", "announced", "earnings", "quarterly results", "financial results",
-        "growth", "profit", "net income", "results", "quarterly revenue", "quarterly profit",
-        "revenue increase", "revenue growth", "reported revenue", "announced revenue"
+        "reported",
+        "announced",
+        "earnings",
+        "quarterly results",
+        "financial results",
+        "growth",
+        "profit",
+        "net income",
+        "results",
+        "quarterly revenue",
+        "quarterly profit",
+        "revenue increase",
+        "revenue growth",
+        "reported revenue",
+        "announced revenue"
       ],
-      "attributes": ["company", "date", "amount", "growth", "period"]
+      "attributes": [
+        "company",
+        "date",
+        "amount",
+        "growth",
+        "period"
+      ]
     },
     "STOCK_MOVEMENT": {
       "triggers": [
-        "increased", "decreased", "fell", "dropped", "stock price", "gained", "lost", "jumped", "plunged", "soared", "declined",
-        "rise", "gain", "loss", "up", "down", "surged", "slipped", "advanced", "retreated",
-        "price rose", "stock rose", "share price rose", "rose by", "rose to"
+        "increased",
+        "decreased",
+        "fell",
+        "dropped",
+        "gained",
+        "lost",
+        "jumped",
+        "plunged",
+        "soared",
+        "declined",
+        "rise",
+        "gain",
+        "loss",
+        "up",
+        "down",
+        "surged",
+        "slipped",
+        "advanced",
+        "retreated",
+        "price rose",
+        "share price rose",
+        "rose by",
+        "rose to"
       ],
-      "attributes": ["company", "date", "percent", "reason"]
+      "attributes": [
+        "company",
+        "date",
+        "percent",
+        "reason"
+      ]
     }
   },
   "healthcare_events": {
     "ADMISSION": {
-      "triggers": ["admitted", "hospitalized", "checked in"],
-      "attributes": ["date", "hospital", "reason", "patient"]
+      "triggers": [
+        "admitted",
+        "hospitalized",
+        "checked in"
+      ],
+      "attributes": [
+        "date",
+        "hospital",
+        "reason",
+        "patient"
+      ]
     },
     "DISCHARGE": {
-      "triggers": ["discharged", "released", "sent home"],
-      "attributes": ["date", "condition", "instructions", "patient"]
+      "triggers": [
+        "discharged",
+        "released",
+        "sent home"
+      ],
+      "attributes": [
+        "date",
+        "condition",
+        "instructions",
+        "patient"
+      ]
     },
     "DIAGNOSIS": {
-      "triggers": ["diagnosed", "found to have", "identified with"],
-      "attributes": ["disease", "patient", "date", "physician"]
+      "triggers": [
+        "diagnosed",
+        "found to have",
+        "identified with"
+      ],
+      "attributes": [
+        "disease",
+        "patient",
+        "date",
+        "physician"
+      ]
     },
     "PRESCRIPTION": {
-      "triggers": ["prescribed", "given medication", "started on"],
-      "attributes": ["medication", "dosage", "frequency", "patient"]
+      "triggers": [
+        "prescribed",
+        "given medication",
+        "started on"
+      ],
+      "attributes": [
+        "medication",
+        "dosage",
+        "frequency",
+        "patient"
+      ]
     },
     "SURGERY": {
-      "triggers": ["surgery", "operation", "surgical procedure"],
-      "attributes": ["procedure", "patient", "date", "surgeon", "outcome"]
+      "triggers": [
+        "surgery",
+        "operation",
+        "surgical procedure"
+      ],
+      "attributes": [
+        "procedure",
+        "patient",
+        "date",
+        "surgeon",
+        "outcome"
+      ]
     },
     "TEST_RESULT": {
-      "triggers": ["test showed", "results indicate", "lab values"],
-      "attributes": ["test_type", "result", "normal_range", "patient"]
+      "triggers": [
+        "test showed",
+        "results indicate",
+        "lab values"
+      ],
+      "attributes": [
+        "test_type",
+        "result",
+        "normal_range",
+        "patient"
+      ]
     }
   }
 }

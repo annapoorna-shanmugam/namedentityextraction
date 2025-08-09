@@ -27,21 +27,21 @@ function setupEventListeners() {
     });
 }
 
-function switchTab(tabName) {
+function switchTab(tabName, el) {
     document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
     document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-    
-    event.target.classList.add('active');
+    if (el) el.classList.add('active');
     document.getElementById(tabName + '-tab').classList.add('active');
 }
 
-function switchResultTab(tabName) {
+
+function switchResultTab(tabName, el) {
     document.querySelectorAll('.result-tab-button').forEach(btn => btn.classList.remove('active'));
     document.querySelectorAll('.result-tab-content').forEach(content => content.classList.remove('active'));
-    
-    event.target.classList.add('active');
+    if (el) el.classList.add('active');
     document.getElementById(tabName + '-tab').classList.add('active');
 }
+
 
 function updateConfidenceDisplay() {
     const slider = document.getElementById('confidence-range');
@@ -155,6 +155,8 @@ async function extractEntitiesAndEvents() {
     try {
         if (activeTab === 'text') {
             text = document.getElementById('input-text').value.trim();
+            // Normalize curly quotes before sending to backend/highlighter
+            text = text.replace(/\u2018|\u2019/g, "'").replace(/\u201C|\u201D/g, '"');
             if (!text) {
                 alert('Please enter some text to analyze.');
                 hideLoading();
@@ -221,66 +223,39 @@ function displayResults(data) {
 }
 
 function displayHighlightedText(text, entities, events) {
-    const container = document.getElementById('highlighted-text');
-    
-    // Escape HTML special characters to prevent corruption
-    function escapeHtml(str) {
-        return str.replace(/[&<>"']/g, function(tag) {
-            const charsToReplace = {
-                '&': '&amp;',
-                '<': '&lt;',
-                '>': '&gt;',
-                '"': '&quot;',
-                "'": '&#39;'
-            };
-            return charsToReplace[tag] || tag;
-        });
+  const container = document.getElementById('highlighted-text');
+
+  const escapeHtml = (str) => str.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+  // Build unified annotation list using ORIGINAL indices
+  const ann = [
+    ...entities.map(e => ({ start: e.start, end: e.end, kind: 'entity', type: e.type, conf: e.confidence, text: e.text })),
+    ...events.map(ev => ({ start: ev.start, end: ev.end, kind: 'event', type: ev.type, conf: ev.confidence, text: ev.trigger }))
+  ].sort((a, b) => (a.start - b.start) || (b.end - a.end));
+
+  // Remove overlaps: keep earlier/longer
+  const cleaned = [];
+  let lastEnd = -1;
+  for (const a of ann) {
+    if (a.start >= lastEnd) { cleaned.push(a); lastEnd = a.end; }
+  }
+
+  // Stitch output by slicing original text and escaping per slice
+  let out = '';
+  let pos = 0;
+  for (const a of cleaned) {
+    if (pos < a.start) out += escapeHtml(text.slice(pos, a.start));
+    const chunk = escapeHtml(text.slice(a.start, a.end));
+    if (a.kind === 'entity') {
+      out += `<span class="entity-highlight entity-${a.type}" title="${a.type}${a.conf ? ' ('+a.conf+')' : ''}">${chunk}</span>`;
+    } else {
+      out += `<span class="event-highlight" title="Event: ${a.type}">${chunk}</span>`;
     }
-    let annotatedText = escapeHtml(text);
-    let offset = 0;
-    
-    const allAnnotations = [
-        ...entities.map(e => ({...e, annotationType: 'entity'})),
-        ...events.map(e => ({...e, annotationType: 'event', text: e.trigger}))
-    ].sort((a, b) => b.start - a.start); // Sort in reverse order
-
-    // Track covered regions to avoid overlapping/nested highlights
-    let covered = Array(annotatedText.length).fill(false);
-
-    allAnnotations.forEach(annotation => {
-        const start = annotation.start;
-        const end = annotation.end;
-        // Skip if any part of this region is already covered
-        let overlap = false;
-        for (let i = start; i < end; i++) {
-            if (covered[i]) {
-                overlap = true;
-                break;
-            }
-        }
-        if (overlap) return;
-
-        const currentText = annotatedText.substring(start, end);
-        let highlightClass, tooltip;
-        if (annotation.annotationType === 'entity') {
-            const entityType = annotation.type || annotation.entity_type;
-            highlightClass = `entity-highlight entity-${entityType}`;
-            tooltip = `${entityType} (${annotation.confidence || 'N/A'})`;
-        } else {
-            highlightClass = 'event-highlight';
-            tooltip = `Event: ${annotation.event_type || annotation.type}`;
-        }
-        const highlightedSpan = `<span class="${highlightClass}" title="${tooltip}">${currentText}</span>`;
-        annotatedText = annotatedText.substring(0, start) + highlightedSpan + annotatedText.substring(end);
-        // Mark this region as covered
-        for (let i = start; i < start + highlightedSpan.length; i++) {
-            covered[i] = true;
-        }
-    });
-    
-    container.innerHTML = annotatedText;
+    pos = a.end;
+  }
+  if (pos < text.length) out += escapeHtml(text.slice(pos));
+  container.innerHTML = out;
 }
-
 function displayEntities(entities) {
     const container = document.getElementById('entities-list');
     container.innerHTML = '';

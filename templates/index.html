@@ -17,13 +17,13 @@
         <div class="main-content">
             <div class="input-section">
                 <div class="tabs">
-                    <button class="tab-button active" onclick="switchTab('text')">
+                    <button class="tab-button active" onclick="switchTab('text', this)">
                         <i class="fas fa-edit"></i> Text Input
                     </button>
-                    <button class="tab-button" onclick="switchTab('file')">
+                    <button class="tab-button" onclick="switchTab('file', this)">
                         <i class="fas fa-upload"></i> File Upload
                     </button>
-                    <button class="tab-button" onclick="switchTab('sample')">
+                    <button class="tab-button" onclick="switchTab('sample', this)">
                         <i class="fas fa-file-medical"></i> Sample Data
                     </button>
                 </div>
@@ -90,16 +90,16 @@
                 </div>
 
                 <div class="results-tabs">
-                    <button class="result-tab-button active" onclick="switchResultTab('highlighted')">
+                    <button class="result-tab-button active" onclick="switchResultTab('highlighted', this)">
                         <i class="fas fa-highlighter"></i> Highlighted Text
                     </button>
-                    <button class="result-tab-button" onclick="switchResultTab('entities')">
+                    <button class="result-tab-button" onclick="switchResultTab('entities', this)">
                         <i class="fas fa-tags"></i> Entities
                     </button>
-                    <button class="result-tab-button" onclick="switchResultTab('events')">
+                    <button class="result-tab-button" onclick="switchResultTab('events', this)">
                         <i class="fas fa-calendar-alt"></i> Events
                     </button>
-                    <button class="result-tab-button" onclick="switchResultTab('statistics')">
+                    <button class="result-tab-button" onclick="switchResultTab('statistics', this)">
                         <i class="fas fa-chart-bar"></i> Statistics
                     </button>
                 </div>
